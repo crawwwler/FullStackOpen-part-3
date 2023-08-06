@@ -1,0 +1,17 @@
+POST https://mypbapp.fly.dev/api/persons
+Content-Type: application/json
+
+{
+    "name": "maj mja",
+    "number": "235545"
+}
+
+###
+
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+    "name": "get the fuck into it",
+    "number": "44444"
+}
