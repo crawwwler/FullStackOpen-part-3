@@ -6,6 +6,9 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
+    "deploy": "fly deploy",
+    "build:ui": "@powershell Remove-Item -Recurse -Force build && cd ../phonebookfront/phonebook && npm run build  && @powershell Copy-Item -Path build -Destination ../../phonebookback -Recurse",
+    "deploy:full": "npm run build:ui && npm run deploy",
     "test": "\"echo \\\"Error: no test specified\\\" && exit 1\""
   },
   "author": "shahin",

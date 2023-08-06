@@ -2,8 +2,8 @@ POST https://mypbapp.fly.dev/api/persons
 Content-Type: application/json
 
 {
-    "name": "maj mja",
-    "number": "235545"
+    "name": "shahin",
+    "number": "1234"
 }
 
 ###

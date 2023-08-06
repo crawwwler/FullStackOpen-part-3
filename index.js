@@ -5,7 +5,8 @@ const cors = require('cors')
 const app = express() // ASSIGN AN EXPRESS APP TO THE APP VARIABLE
 
 
-app.use(express.json()) // WE GET JSON OF EXPRESS INTO THE USE
+app.use(express.json()) 
+app.use(express.static('build'))
 app.use(cors())
 
 morgan.token('data-sent', (request) => {
@@ -16,7 +17,7 @@ app.use(morgan(':method :url :status :response-time ms - :data-sent'))
 
 
 
-// OUR DATA COLLECTION AT THE MOMENT
+// data collection
 let data = [
     { 
       "id": 1,
