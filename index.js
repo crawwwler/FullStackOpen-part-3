@@ -44,11 +44,11 @@ let data = [
 
 // FUNCTION TO GENERATE ID's
 
-const generateID = () => {
+/*const generateID = () => {
     const min = 10
     const max = 999
     return Math.floor(Math.random() * (max - min + 1) + min )
-}
+}*/
 
 
 //ROUTES
@@ -108,7 +108,7 @@ app.get("/api/persons/:id", (request, response)=> {
     })
 })
 
-app.post('/api/persons', (request, response)=> {
+/*app.post('/api/persons', (request, response)=> {
     const body = request.body
     if(!body.name || !body.number){
         return response.status(400).json({
@@ -131,7 +131,27 @@ app.post('/api/persons', (request, response)=> {
 
     data = data.concat(person)
     response.json(person)
+})*/
+
+app.post('/api/persons', (request, response) => {
+    const body = request.body
+    if(!body.name || !body.number){
+        response.status(400).json({
+            error: "name or number missing"
+        })
+        return
+    }
+
+    const person = new Person({
+        name: body.name,
+        number: body.number
+    })
+
+    person.save().then(savedPerson => {
+        response.json(savedPerson)
+    })
 })
+
 
 
 app.delete('/api/persons/:id', (request, response)=>{
