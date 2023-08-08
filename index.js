@@ -1,8 +1,9 @@
+require('dotenv').config()
 const express = require('express') // IMPORT EXPRESS
+const app = express() // ASSIGN AN EXPRESS APP TO THE APP VARIABLE
 const morgan = require('morgan')
 const cors = require('cors')
-
-const app = express() // ASSIGN AN EXPRESS APP TO THE APP VARIABLE
+const Person = require('./models/mongo')
 
 
 app.use(express.json()) 
@@ -75,12 +76,19 @@ app.get("/api/info", (request, response) => {
                 <br/><h4>${currentTime}</h4>`)
 })
 
-app.get("/api/persons", (request, response) => {
+/*app.get("/api/persons", (request, response) => {
     response.json(data)
+})*/
+
+
+app.get("/api/persons", (request, response)=> {
+    Person.find({}).then(persons=> {
+        response.json(persons)
+    })
 })
 
 
-app.get("/api/persons/:id", (request, response)=> {
+/*app.get("/api/persons/:id", (request, response)=> {
     //IMPORTANT => CONVERT STRING TO INTEGER WHILE WE RETRIEVE THE ID
     const id = Number(request.params.id)
     const pTor = data.find(person => person.id === id)
@@ -89,6 +97,15 @@ app.get("/api/persons/:id", (request, response)=> {
     }else {
         response.status(404).end()
     }
+})*/
+
+app.get("/api/persons/:id", (request, response)=> {
+    Person.findById(request.params.id).then(person=> {
+        response.json(person)
+    })
+    .catch(error=> {
+        response.status(404).json({error:" id not found"})
+    })
 })
 
 app.post('/api/persons', (request, response)=> {
@@ -126,7 +143,7 @@ app.delete('/api/persons/:id', (request, response)=>{
 })
 
 
-const PORT = process.env.PORT || 3001
+const PORT = process.env.PORT
 app.listen(PORT, () => {
     console.log(`server running on port ${PORT}`)
 })
