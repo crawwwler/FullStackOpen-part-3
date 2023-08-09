@@ -5,18 +5,14 @@ const morgan = require('morgan')
 const cors = require('cors')
 const Person = require('./models/mongo')
 
-
 let sizeOfDB = 0
 
-const sizeInitial = () => {
-    Person.find({}).then(persons=> {
-        sizeOfDB = persons.length
-    })
-}
+//THE FIRST RULE AND THE MOST IMPORTANT RULE WHEN YOU ENCOUNTER A PROBLEM: DONT WRITE MORE CODE
+
+
 
 app.use(express.static('build'))
-app.use(express.json()) 
-app.use(sizeInitial)
+app.use(express.json())
 app.use(cors())
 
 
@@ -49,6 +45,17 @@ app.get("/", (request, response) => {
 })
 
 
+// HANDLE THE DATA COLLECTION
+app.get("/api/persons", (request, response)=> {
+    Person.find({}).then(persons=> {
+        sizeOfDB = persons.length
+        response.json(persons)
+    })
+})
+
+
+
+// HANDLE INFO PAGE 
 app.get("/api/info", (request, response) => {
     const xhelper = `Phonebook has info for ${sizeOfDB} people`
     const options = {
@@ -69,16 +76,7 @@ app.get("/api/info", (request, response) => {
 
 
 
-
-app.get("/api/persons", (request, response)=> {
-    Person.find({}).then(persons=> {
-        sizeOfDB = persons.length
-        response.json(persons)
-    })
-})
-
-
-
+// HANDLE SINGLE PERSON
 app.get("/api/persons/:id", (request, response, next)=> {
     Person.findById(request.params.id).then(person => {
         if(person){
@@ -91,6 +89,7 @@ app.get("/api/persons/:id", (request, response, next)=> {
 })
 
 
+// ADDING A NEW PERSON
 app.post('/api/persons', (request, response) => {
     const body = request.body
     if(!body.name || !body.number){
@@ -110,7 +109,7 @@ app.post('/api/persons', (request, response) => {
     })
 })
 
-
+// UPDATING PERSON
 app.put('/api/persons/:id', (request, response, next)=> {
     const body = request.body
     const person = {
@@ -126,7 +125,7 @@ app.put('/api/persons/:id', (request, response, next)=> {
 })
 
 
-
+// DELETING PERSON
 app.delete('/api/persons/:id', (request, response)=>{
     Person.findByIdAndDelete(request.params.id).then(result=> {
         //console.log(result)
