@@ -14,10 +14,29 @@ mongoose.connect(url)
         console.log(`connection to MongoDB has stopped due to ${error.message}`)
     })
 
+
+
 const entrySchema = new mongoose.Schema({
-    name: String,
-    number: String
+    name:{
+        type: String,
+        minLength: [3, 'name is too short'],
+        required: [true, 'name is required']
+    },
+    number: {
+        type: String,
+        minLength: [8, 'length of number is atleast 8'], 
+        validate: {
+            validator: (value)=> {
+                const pattern = /^(?:\d{2}-\d{6,}|\d{3}-\d{5,})$/
+                return pattern.test(value)
+            }
+        },
+        required: [true, 'number is required']
+    }
 })
+
+
+
 
 entrySchema.set('toJSON', {
     transform: (document, returnedObject) => {
