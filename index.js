@@ -1,7 +1,7 @@
 require('dotenv').config()
 const express = require('express')
 
-const app = express() 
+const app = express()
 const morgan = require('morgan')
 const cors = require('cors')
 const Person = require('./models/mongo')
@@ -21,7 +21,7 @@ const errorHandler = (error, request, response, next) => {
     if (error.name === 'CastError') {
         return response.status(400).json({ error: 'malformatted id' })
     } if (error.name === 'ValidationError') {
-        return response.status(400).JSON({ error: error.message })
+        return response.status(400).json({ error: error.message })
     }
     return next(error)
 }
@@ -75,6 +75,7 @@ app.get('/api/persons/:id', (request, response, next) => {
 })
 
 // ADDING A NEW PERSON
+// eslint-disable-next-line consistent-return
 app.post('/api/persons', (request, response, next) => {
     const { body } = request
     if (!body.name || !body.number) {
